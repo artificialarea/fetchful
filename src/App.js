@@ -27,6 +27,7 @@ class App extends Component {
         fetch(url, {
             method: 'GET',
             headers: {
+                'content-type': 'application/json',
                 Authorization: 'Bearer ' + API_TOKEN,
             },
         });
@@ -40,18 +41,17 @@ class App extends Component {
             },
             body: JSON.stringify(
                 {
-                    user_id: 2,
                     title: 'via Fetchful',
-                    public: true,
+                    visible: true,
                     tempo: 80,
                     sequence_length: 16,
+                    audio_sequence: ["hihat", "clap", "trap", "bass"],
                     step_sequence: [
                         [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                         [0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0],
-                    ],
-                    mp3: ''
+                    ]
                 }
 
             )
@@ -62,12 +62,15 @@ class App extends Component {
 
         const server = 'http://localhost:8000';
         // adjust endpoint 
-        // const endpoint = '/api/compositions/1'; // GET
-        const endpoint = '/api/compositions'; // POST
+        // const endpoint = '/api/bookmarks';     // for GET
+        // const endpoint = '/api/users';     // for GET
+        const endpoint = '/api/tracks';     // for GET
+        // const endpoint = '/api/tracks/1';     // for GET
+        // const endpoint = '/api/tracks';    // for POST
 
         const url = server + endpoint;
-        // this.performFetchGET(url)
-        this.performFetchPOST(url)
+        this.performFetchGET(url)                   // for GET
+        // this.performFetchPOST(url)               // for POST
             .then(res => {
                 if (res.ok) {
                     return res.json()
