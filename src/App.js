@@ -22,10 +22,20 @@ class App extends Component {
         console.log(API_TOKEN);
     }
 
+    // Suite of CRUD fetch calls for GET, POST, PATCH, DELETE
 
     performFetchGET = (url) =>
         fetch(url, {
             method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                Authorization: 'Bearer ' + API_TOKEN,
+            },
+        });
+        
+    performFetchDELETE = (url) =>
+        fetch(url, {
+            method: 'DELETE',
             headers: {
                 'content-type': 'application/json',
                 Authorization: 'Bearer ' + API_TOKEN,
@@ -40,10 +50,37 @@ class App extends Component {
                 Authorization: 'Bearer ' + API_TOKEN,
             },
             body: JSON.stringify(
-                {
+                {   
+                    user_id: 1,
                     title: 'via Fetchful',
                     visible: true,
                     tempo: 80,
+                    sequence_length: 16,
+                    audio_sequence: ["hihat", "clap", "trap", "bass"],
+                    step_sequence: [
+                        [1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                        [0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0],
+                    ]
+                }
+
+            )
+        });
+
+    performFetchPATCH = (url) =>
+        fetch(url, {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+                Authorization: 'Bearer ' + API_TOKEN,
+            },
+            body: JSON.stringify(
+                {
+                    user_id: 1,
+                    title: 'Updated via Fetchful',
+                    visible: true,
+                    tempo: 250,
                     sequence_length: 16,
                     audio_sequence: ["hihat", "clap", "trap", "bass"],
                     step_sequence: [
@@ -61,16 +98,20 @@ class App extends Component {
     handleClickFetch = (e) => {
 
         const server = 'http://localhost:8000';
-        // adjust endpoint 
-        // const endpoint = '/api/bookmarks';     // for GET
-        // const endpoint = '/api/users';     // for GET
-        const endpoint = '/api/tracks';     // for GET
-        // const endpoint = '/api/tracks/1';     // for GET
-        // const endpoint = '/api/tracks';    // for POST
+
+        // ADJUST ENDPOINT ///////////////////////////////////////// 
+        // const endpoint = '/api/bookmarks';     
+        // const endpoint = '/api/users';     
+        const endpoint = '/api/tracks';     
+        // const endpoint = '/api/tracks/10';     
 
         const url = server + endpoint;
-        this.performFetchGET(url)                   // for GET
-        // this.performFetchPOST(url)               // for POST
+
+        // CHOOSE FETCH METHOD /////////////////////////////////////
+        // this.performFetchDELETE(url)    
+        this.performFetchGET(url)               
+        // this.performFetchPOST(url)              
+        // this.performFetchPATCH(url)              
             .then(res => {
                 if (res.ok) {
                     return res.json()
